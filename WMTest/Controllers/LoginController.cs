@@ -13,12 +13,72 @@ namespace WMTest.Controllers
     {
         private WMTestDbContext db = new WMTestDbContext();
 
+
+        //
+        // GET: /Login/Forgot
+        public ActionResult Forgot()
+        {
+            return View();
+        }
+
+
+        //
+        // POST: /Login/Forgot
+        [HttpPost]
+        public ActionResult Forgot(List<string> p)
+        {
+            if ("".Equals(p[0]) && "".Equals(p[1]))
+            {
+                ModelState.AddModelError("", "Please fill the least a field");
+                return View();
+            }
+
+            var uFound = from u in db.Users.ToList()
+                         where u.UserName.Equals(p[0]) || u.Email.Equals(p[1])
+                         select u;
+            
+            if (uFound.Any())
+            {
+                var email = uFound.First().Email;
+                p.Add(email);
+                return View(p);
+            }
+            
+            ModelState.AddModelError("", "Username or Email not found in our database");
+            return View();
+        }
+
         //
         // GET: /Login/
-
         public ActionResult Index()
         {
-            return View(db.Users.ToList());
+            return View();
+        }
+
+        //
+        // POST: /Login/
+        [HttpPost]
+        public ActionResult Index(User user)
+        {
+            var res = from u in db.Users where u.UserName.Equals(user.UserName) && u.Password.Equals(user.Password) select u;
+            if (res.Any())
+            {
+                return RedirectToAction("Index");
+            }
+            ModelState.AddModelError("", "Invalid username or password");
+            return View();
+        }
+
+        //
+        // POST: /Login/Details
+        [HttpPost]
+        public ActionResult Details(User user)
+        {
+            if (user == null)
+            {
+                return HttpNotFound();
+            }
+            return View(user);
         }
 
         //

@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Web;
 using System.Web.Http;
 using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
+using WMTest.Models;
 
 namespace WMTest
 {
@@ -38,6 +40,8 @@ namespace WMTest
 
         protected void Application_Start()
         {
+            Database.SetInitializer<WMTestDbContext>(new WMDbInitializer());
+
             AreaRegistration.RegisterAllAreas();
 
             RegisterGlobalFilters(GlobalFilters.Filters);

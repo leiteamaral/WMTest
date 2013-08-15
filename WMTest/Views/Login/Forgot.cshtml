@@ -1,0 +1,51 @@
+﻿@model List<string>
+
+@{
+    ViewBag.Title = "Forgotten Password";
+}
+
+@using (Html.BeginForm())
+{
+    @Html.ValidationSummary(true)
+        
+
+    <fieldset>
+        <legend>User</legend>
+        <div class="editor-label">
+            @Html.Label("Username")
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model[0])
+        </div>
+        
+        <div class=""><p>Or</p></div>
+
+        <div class="editor-label">
+            @Html.Label("Email")
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model[1])
+        </div>
+
+        <p>
+            <input type="submit" value="Recover" />
+        </p>
+
+    </fieldset>
+   
+    
+    if (Model != null && Model.Count > 0)
+    {
+        <p>
+            @Html.Label("Success an email was sent to: '" + Model[Model.Count-1] + "'")
+        </p>
+    }
+}
+
+<div>
+    @Html.ActionLink("Back to Login", "Index")
+</div>
+
+@section featured {
+    @Scripts.Render("~/bundles/jqueryval")
+}

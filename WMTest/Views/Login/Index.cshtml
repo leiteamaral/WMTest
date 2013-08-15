@@ -1,45 +1,45 @@
-﻿@model IEnumerable<WMTest.Models.User>
+﻿@model WMTest.Models.User
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Login";
 }
 
-<h2>Index</h2>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
-<table>
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Name)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Login)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Password)
-        </th>
-        <th></th>
-    </tr>
+@using (Html.BeginForm())
+{
+    @Html.ValidationSummary(true)
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Name)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Login)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Password)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.ID }) |
-            @Html.ActionLink("Details", "Details", new { id=item.ID }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.ID })
-        </td>
-    </tr>
+    
+    <fieldset>
+        <legend>User</legend>
+        <div class="editor-label">
+            @Html.LabelFor(model => model.UserName)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.UserName)
+            @Html.ValidationMessageFor(model => model.UserName)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Password)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Password)
+            @Html.ValidationMessageFor(model => model.Password)
+        </div>
+
+        <p>
+            <input type="submit" value="Login" />
+        </p>
+    </fieldset>
+    
 }
 
-</table>
+<div>
+    @Html.ActionLink("Forgot your Password?", "Forgot")
+    @Html.ActionLink("Create New Login", "Create")
+</div>
+
+@section featured {
+    @Scripts.Render("~/bundles/jqueryval")
+}

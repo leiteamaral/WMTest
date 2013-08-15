@@ -22,16 +22,16 @@ namespace WMTest.Models
         {
             var users = new List<User> 
             {
-                new User {Login = "joao", Name = "João Paulo", Password = "12345"}, 
-                new User {Login = "maria", Name = "Maria Aparecida", Password = "12345"},
-                new User {Login = "fred", Name = "Frederico Gama", Password = "12345"},
-                new User {Login = "sa", Name = "Samantha Leite", Password = "12345"},
-                new User {Login = "proberto", Name = "Paulo Roberto", Password = "12345"},
-                new User {Login = "pedrao", Name = "Pedro Augusto", Password = "12345"},
-                new User {Login = "tsilva", Name = "Tariana Silva", Password = "12345"},
-                new User {Login = "poliveira", Name = "Paola Oliveira", Password = "12345"},
-                new User {Login = "ssatto", Name = "Sabrina Satto", Password = "12345"},
-                new User {Login = "lpiovani", Name = "Luana Piovani", Password = "12345"}
+                new User {UserName = "joao", Name = "João Paulo", Password = "12345", Email = "leiteamaral@yahoo.com.br"}, 
+                new User {UserName = "maria", Name = "Maria Aparecida", Password = "12345", Email = "leiteamaral@yahoo.com.br"},
+                new User {UserName = "fred", Name = "Frederico Gama", Password = "12345", Email = "leiteamaral@yahoo.com.br"},
+                new User {UserName = "sa", Name = "Samantha Leite", Password = "12345", Email = "leiteamaral@yahoo.com.br"},
+                new User {UserName = "proberto", Name = "Paulo Roberto", Password = "12345", Email = "leiteamaral@yahoo.com.br"},
+                new User {UserName = "pedrao", Name = "Pedro Augusto", Password = "12345", Email = "leiteamaral@yahoo.com.br"},
+                new User {UserName = "tsilva", Name = "Tariana Silva", Password = "12345", Email = "leiteamaral@yahoo.com.br"},
+                new User {UserName = "poliveira", Name = "Paola Oliveira", Password = "12345", Email = "leiteamaral@yahoo.com.br"},
+                new User {UserName = "ssatto", Name = "Sabrina Satto", Password = "12345", Email = "poliveira@testemailserver.com.br"},
+                new User {UserName = "lpiovani", Name = "Luana Piovani", Password = "12345", Email = "leiteamaral@yahoo.com.br"}
             };
             users.ForEach(d => context.Users.Add(d));
 

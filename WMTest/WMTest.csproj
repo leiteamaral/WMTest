@@ -40,7 +40,7 @@
       <HintPath>..\..\..\Program Files\Microsoft ADO.NET Entity Framework 4.1\Binaries\EntityFramework.dll</HintPath>
     </Reference>
     <Reference Include="Kendo.Mvc">
-      <HintPath>..\..\..\Program Files\Telerik\Kendo UI for ASP.NET MVC Q2 2013\wrappers\aspnetmvc\Binaries\Mvc3\Kendo.Mvc.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\Program Files\Telerik\Kendo UI for ASP.NET MVC Q2 2013\wrappers\aspnetmvc\Binaries\Mvc3\Kendo.Mvc.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
@@ -504,6 +504,8 @@
     <Content Include="Views\Login\Create.cshtml" />
     <Content Include="Views\Login\Edit.cshtml" />
     <Content Include="Views\Login\Delete.cshtml" />
+    <Content Include="Views\Login\Copy of Index.cshtml" />
+    <Content Include="Views\Login\Forgot.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
