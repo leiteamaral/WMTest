@@ -13,7 +13,6 @@ namespace WMTest.Controllers
     {
         private WMTestDbContext db = new WMTestDbContext();
 
-
         //
         // GET: /Login/Forgot
         public ActionResult Forgot()
@@ -21,31 +20,31 @@ namespace WMTest.Controllers
             return View();
         }
 
-
         //
         // POST: /Login/Forgot
         [HttpPost]
-        public ActionResult Forgot(List<string> p)
+        public ActionResult Forgot(User user)
         {
-            if ("".Equals(p[0]) && "".Equals(p[1]))
+            if (String.IsNullOrEmpty(user.UserName))
             {
-                ModelState.AddModelError("", "Please fill the least a field");
-                return View();
+                ModelState.AddModelError("", "Please fill the Username field");
+                return View(user);
             }
-
-            var uFound = from u in db.Users.ToList()
-                         where u.UserName.Equals(p[0]) || u.Email.Equals(p[1])
-                         select u;
-            
-            if (uFound.Any())
+            var uFound = db.Users.ToList().FirstOrDefault(x => x.UserName.Equals(user.UserName));
+            if (uFound!=null)
             {
-                var email = uFound.First().Email;
-                p.Add(email);
-                return View(p);
+                var err = EmailClient.SendEmailFromWebMaster(uFound, uFound.Name + ", your password is: " + uFound.Password, "Password Recovery");
+                if (err == null)
+                {
+                    user.Email = uFound.Email;
+                }
+                ModelState.AddModelError("", err);
             }
-            
-            ModelState.AddModelError("", "Username or Email not found in our database");
-            return View();
+            else
+            {
+                ModelState.AddModelError("", String.Format("Username '{0}' not found in our database", user.UserName));   
+            }
+            return View(user);
         }
 
         //
@@ -110,11 +109,22 @@ namespace WMTest.Controllers
         {
             if (ModelState.IsValid)
             {
+                var u = db.Users.FirstOrDefault(x => x.UserName.Equals(user.UserName));
+                if (u != null)
+                {
+                    ModelState.AddModelError("", "This Username is already in use, please type other");
+                    return View(user);
+                }
+                u = db.Users.FirstOrDefault(x => x.Email.Equals(user.Email));
+                if (u != null)
+                {
+                    ModelState.AddModelError("", "This Email is already in use, please type other");
+                    return View(user);
+                }
                 db.Users.Add(user);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", "Home");
             }
-
             return View(user);
         }
 

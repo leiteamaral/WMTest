@@ -22,6 +22,7 @@ namespace WMTest.Models
         {
             var users = new List<User> 
             {
+                new User {UserName = "chitestwebmaster", Name = "WebMaster", Password = "12345", Email = "chitestwebmaster@gmail.com"},
                 new User {UserName = "joao", Name = "João Paulo", Password = "12345", Email = "leiteamaral@yahoo.com.br"}, 
                 new User {UserName = "maria", Name = "Maria Aparecida", Password = "12345", Email = "leiteamaral@yahoo.com.br"},
                 new User {UserName = "fred", Name = "Frederico Gama", Password = "12345", Email = "leiteamaral@yahoo.com.br"},
@@ -42,9 +43,11 @@ namespace WMTest.Models
         {
             var configs = new List<Configuration>
             {
-               new Configuration(){Name = "Sever", Value = "mail.yahoo.com.br"},
-               new Configuration(){Name = "Port", Value = "51"},
-               new Configuration(){Name = "ServerTimeout", Value = "10000"}
+               new Configuration(){Name = "SmtpServer", Value = "smtp.gmail.com"},
+               new Configuration(){Name = "SmtpPort", Value = "587"},
+               new Configuration(){Name = "SmtpSSL", Value = "1"},
+               new Configuration(){Name = "SmtpUsername", Value = "chitestwebmaster@gmail.com"},
+               new Configuration(){Name = "SmtpPassword", Value = "unifei12345"}
             };
             configs.ForEach(d => context.Configurations.Add(d));
 

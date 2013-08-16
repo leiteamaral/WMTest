@@ -1,4 +1,4 @@
-﻿@model List<string>
+﻿@model WMTest.Models.User
 
 @{
     ViewBag.Title = "Forgotten Password";
@@ -12,32 +12,22 @@
     <fieldset>
         <legend>User</legend>
         <div class="editor-label">
-            @Html.Label("Username")
+            @Html.LabelFor(model => model.UserName)
         </div>
         <div class="editor-field">
-            @Html.EditorFor(model => model[0])
+            @Html.EditorFor(model => model.UserName)
+            @Html.ValidationMessageFor(model => model.UserName)
         </div>
-        
-        <div class=""><p>Or</p></div>
-
-        <div class="editor-label">
-            @Html.Label("Email")
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model[1])
-        </div>
-
         <p>
             <input type="submit" value="Recover" />
         </p>
-
     </fieldset>
    
     
-    if (Model != null && Model.Count > 0)
+    if (Model != null && Model.Email!=null)
     {
         <p>
-            @Html.Label("Success an email was sent to: '" + Model[Model.Count-1] + "'")
+            @Html.Raw("Success an email was sent to: '" + Model.Email + "'")
         </p>
     }
 }

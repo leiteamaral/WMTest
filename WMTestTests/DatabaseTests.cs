@@ -17,8 +17,7 @@ namespace WMTestTests
         private static readonly WMTestDbContext Db = new WMTestDbContext();
         private static readonly WMDbInitializer DbInit = new WMDbInitializer();
 
-        [TestMethod]
-        public void TestDbInitialze()
+        public static void TestDbInitialze()
         {
             Database.SetInitializer<WMTestDbContext>(DbInit);
         }
