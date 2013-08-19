@@ -11,10 +11,22 @@ namespace WMTest.Models
     {
         public int ID { get; set; }
 
-        [Required(ErrorMessage = "Parameter Name is required")]
-        public string Name { get; set; }
+        [Required]
+        [StringLength(50)]
+        public string Server { get; set; }
 
-        [Required(ErrorMessage = "Parameter Value is required")]
-        public string Value { get; set; }
+        [Required]
+        public int Port { get; set; }
+
+        [Required]
+        public bool SSL { get; set; }
+
+        [Required]
+        [StringLength(50)]
+        public string Username { get; set; }
+
+        [Required]
+        [StringLength(50)]
+        public string Password { get; set; }
     }
 }

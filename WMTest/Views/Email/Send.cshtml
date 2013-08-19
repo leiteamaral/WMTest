@@ -1,0 +1,66 @@
+﻿@model WMTest.Models.Email
+
+
+
+@using (Html.BeginForm())
+{
+    <fieldset>
+        <legend>Email</legend>
+        
+        <div class="editor-label">
+            @Html.Label("To:")
+        </div>
+        <div class="editor-field">
+            @Html.TextBoxFor(model => model.Recipient)
+            @Html.ValidationMessageFor(model => model.Recipient)
+        </div>
+        <div class="editor-label">
+            @Html.Label("Subject:")
+        </div>
+        <div class="editor-field">
+            @Html.TextBoxFor(model => model.Subject)
+            @Html.ValidationMessageFor(model => model.Subject)
+        </div>
+        <div class="editor-label">
+            @Html.Label("Message:")
+        </div>
+        <div class="editor-field">
+             @Html.TextAreaFor(model => model.Body)
+        </div>
+        <p>
+            <input type="submit" value="Send" />  
+        </p>
+    </fieldset>     
+}
+
+
+<style scoped>
+   
+        label {
+        display: block;
+        font-size: 1.2em;
+        font-weight: 600;
+    }
+
+    label.checkbox {
+        display: inline;
+    }
+
+    input, textarea {
+        border: 1px solid #e2e2e2;
+        background: #fff;
+        color: #333;
+        font-size: 1.2em;
+        margin: 5px 0 6px 0;
+        padding: 5px;
+        width: 300px;
+    }
+
+    textarea {
+        font-family: inherit;
+        width: 500px;
+    }
+</style>
+
+
+

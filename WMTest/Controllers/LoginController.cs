@@ -5,6 +5,7 @@ using System.Data.Entity;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Routing;
 using WMTest.Models;
 
 namespace WMTest.Controllers
@@ -33,7 +34,7 @@ namespace WMTest.Controllers
             var uFound = db.Users.ToList().FirstOrDefault(x => x.UserName.Equals(user.UserName));
             if (uFound!=null)
             {
-                var err = EmailClient.SendEmailFromWebMaster(uFound, uFound.Name + ", your password is: " + uFound.Password, "Password Recovery");
+                var err = EmailClient.SendEmailFromWebMaster(uFound.Email, uFound.Name + ", your password is: " + uFound.Password, "Password Recovery");
                 if (err == null)
                 {
                     user.Email = uFound.Email;
@@ -45,6 +46,15 @@ namespace WMTest.Controllers
                 ModelState.AddModelError("", String.Format("Username '{0}' not found in our database", user.UserName));   
             }
             return View(user);
+        }
+
+
+        //
+        // GET: /Logout/
+        public ActionResult Logout()
+        {
+            Session["LOGGED_USER"] = null;
+            return RedirectToAction("Index", "Home");
         }
 
         //
@@ -59,40 +69,16 @@ namespace WMTest.Controllers
         [HttpPost]
         public ActionResult Index(User user)
         {
-            var res = from u in db.Users where u.UserName.Equals(user.UserName) && u.Password.Equals(user.Password) select u;
-            if (res.Any())
+            var uFound = db.Users.Include(x=>x.Config).FirstOrDefault(x=>x.UserName.Equals(user.UserName) && x.Password.Equals(user.Password));
+            if (uFound!=null)
             {
-                return RedirectToAction("Index");
+                Session.Add("LOGGED_USER", uFound);
+                return RedirectToAction("Index", "Email");
             }
             ModelState.AddModelError("", "Invalid username or password");
             return View();
         }
-
-        //
-        // POST: /Login/Details
-        [HttpPost]
-        public ActionResult Details(User user)
-        {
-            if (user == null)
-            {
-                return HttpNotFound();
-            }
-            return View(user);
-        }
-
-        //
-        // GET: /Login/Details/5
-
-        public ActionResult Details(int id = 0)
-        {
-            User user = db.Users.Find(id);
-            if (user == null)
-            {
-                return HttpNotFound();
-            }
-            return View(user);
-        }
-
+        
         //
         // GET: /Login/Create
 
@@ -121,8 +107,10 @@ namespace WMTest.Controllers
                     ModelState.AddModelError("", "This Email is already in use, please type other");
                     return View(user);
                 }
+                user.Config = WMDbInitializer.GetDefaultConfig(db);
                 db.Users.Add(user);
                 db.SaveChanges();
+                Session["LOGGED_USER"] = null;
                 return RedirectToAction("Index", "Home");
             }
             return View(user);
@@ -154,31 +142,6 @@ namespace WMTest.Controllers
                 return RedirectToAction("Index");
             }
             return View(user);
-        }
-
-        //
-        // GET: /Login/Delete/5
-
-        public ActionResult Delete(int id = 0)
-        {
-            User user = db.Users.Find(id);
-            if (user == null)
-            {
-                return HttpNotFound();
-            }
-            return View(user);
-        }
-
-        //
-        // POST: /Login/Delete/5
-
-        [HttpPost, ActionName("Delete")]
-        public ActionResult DeleteConfirmed(int id)
-        {
-            User user = db.Users.Find(id);
-            db.Users.Remove(user);
-            db.SaveChanges();
-            return RedirectToAction("Index");
         }
 
         protected override void Dispose(bool disposing)

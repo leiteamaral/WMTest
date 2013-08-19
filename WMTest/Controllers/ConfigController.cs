@@ -4,112 +4,45 @@ using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Web;
+using System.Web.Management;
 using System.Web.Mvc;
+using System.Web.Routing;
 using WMTest.Models;
 
 namespace WMTest.Controllers
 {
-    public class ConfigController : Controller
+    public class ConfigController : LoggedUserController
     {
         private WMTestDbContext db = new WMTestDbContext();
 
         //
-        // GET: /Config/
-
-        public ActionResult Index()
+        // GET: /Config/5
+        public ActionResult Index(string result)
         {
-            return View(db.Configurations.ToList());
+            ViewBag.Result = result ?? "";
+            return PartialView(LoggedUser.Config);
         }
-
-        //
-        // GET: /Config/Details/5
-
-        public ActionResult Details(int id = 0)
-        {
-            Configuration configuration = db.Configurations.Find(id);
-            if (configuration == null)
-            {
-                return HttpNotFound();
-            }
-            return View(configuration);
-        }
-
-        //
-        // GET: /Config/Create
-
-        public ActionResult Create()
-        {
-            return View();
-        }
-
-        //
-        // POST: /Config/Create
 
         [HttpPost]
-        public ActionResult Create(Configuration configuration)
+        public ActionResult Index(Configuration config)
         {
-            if (ModelState.IsValid)
+            try
             {
-                db.Configurations.Add(configuration);
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                if (ModelState.IsValid)
+                {
+                    db.Entry(config).State = EntityState.Modified;
+                    db.SaveChanges();
+                }
+                return RedirectToAction("Index", "Email", new RouteValueDictionary() { { "aTab", "0" } });
             }
-
-            return View(configuration);
-        }
-
-        //
-        // GET: /Config/Edit/5
-
-        public ActionResult Edit(int id = 0)
-        {
-            Configuration configuration = db.Configurations.Find(id);
-            if (configuration == null)
+            catch (Exception)
             {
-                return HttpNotFound();
+                return RedirectToAction("Index", "Email", new RouteValueDictionary() { { "aTab", "0" }, { "Result", "Error!!!" } });
             }
-            return View(configuration);
+            
+            
         }
-
-        //
-        // POST: /Config/Edit/5
-
-        [HttpPost]
-        public ActionResult Edit(Configuration configuration)
-        {
-            if (ModelState.IsValid)
-            {
-                db.Entry(configuration).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
-            return View(configuration);
-        }
-
-        //
-        // GET: /Config/Delete/5
-
-        public ActionResult Delete(int id = 0)
-        {
-            Configuration configuration = db.Configurations.Find(id);
-            if (configuration == null)
-            {
-                return HttpNotFound();
-            }
-            return View(configuration);
-        }
-
-        //
-        // POST: /Config/Delete/5
-
-        [HttpPost, ActionName("Delete")]
-        public ActionResult DeleteConfirmed(int id)
-        {
-            Configuration configuration = db.Configurations.Find(id);
-            db.Configurations.Remove(configuration);
-            db.SaveChanges();
-            return RedirectToAction("Index");
-        }
+       
 
         protected override void Dispose(bool disposing)
         {

@@ -22,7 +22,7 @@ namespace WMTestTests
                 Password = "xpto123",
                 UserName = "amaral"
             };
-            var err = WMTest.Models.EmailClient.SendEmailFromWebMaster(uTest, "Your password is: " + uTest.Password, "Password Recovery");
+            var err = WMTest.Models.EmailClient.SendEmailFromWebMaster(uTest.Email, "Your password is: " + uTest.Password, "Password Recovery");
             Assert.IsNull(err);
         }
     }

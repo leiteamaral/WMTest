@@ -7,23 +7,23 @@ namespace WMTest.Models
 {
     public class EmailClient
     {
-        private static SmtpClient GetSmtpClient()
+        private static SmtpClient GetSmtpClient(User user)
         {
             try
             {
                 var db = new WMTestDbContext();
-                var smtpServer = db.Configurations.First(x => x.Name.Equals("SmtpServer")).Value;
-                var smtpPort = db.Configurations.First(x => x.Name.Equals("SmtpPort")).Value;
-                var smtpUsername = db.Configurations.First(x => x.Name.Equals("SmtpUsername")).Value;
-                var smtpPassword = db.Configurations.First(x => x.Name.Equals("SmtpPassword")).Value;
-                var smtpSSL = !db.Configurations.First(x => x.Name.Equals("SmtpSSL")).Value.Equals("0");
+                var smtpServer = user.Config.Server;
+                var smtpPort = user.Config.Port;
+                var smtpUsername = user.Config.Username;
+                var smtpPassword = user.Config.Password;
+                var smtpSSL = user.Config.SSL;
                 var basicCredential = new NetworkCredential(smtpUsername, smtpPassword);
                 var smtpClient = new SmtpClient()
                 {
                     Credentials = basicCredential,
                     Host = smtpServer,
                     DeliveryMethod = SmtpDeliveryMethod.Network,
-                    Port = int.Parse(smtpPort),
+                    Port = smtpPort,
                     EnableSsl = smtpSSL
                 };
                 return smtpClient;
@@ -34,7 +34,7 @@ namespace WMTest.Models
             }
         }
 
-        public static string SendEmailFromWebMaster(User recipient, string body, string subject)
+        public static string SendEmailFromWebMaster(string recipient, string body, string subject)
         {
             var db = new WMTestDbContext();
             var webMaster = db.Users.FirstOrDefault(x => x.UserName.Equals("chitestwebmaster"));
@@ -54,11 +54,11 @@ namespace WMTest.Models
             {
                 var db = new WMTestDbContext();
                 var message = new MailMessage();
-                message.To.Add(new MailAddress(email.Recipient.Email, email.Recipient.Name));
+                message.To.Add(new MailAddress(email.Recipient));
                 message.Subject = email.Subject;
                 message.From = new MailAddress(email.Sender.Email, email.Sender.Name);
                 message.Body = email.Body;
-                GetSmtpClient().Send(message);
+                GetSmtpClient(email.Sender).Send(message);
                 db.Emails.Add(email);
                 return null;
             }

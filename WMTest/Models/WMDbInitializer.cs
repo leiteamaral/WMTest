@@ -14,7 +14,7 @@ namespace WMTest.Models
         {
             var users = CreateUsers(context);
             var emails = CreateEmails(context, users);
-            var configs = CreateConfigs(context);
+            context.SaveChanges();
         }
 
 
@@ -22,36 +22,35 @@ namespace WMTest.Models
         {
             var users = new List<User> 
             {
-                new User {UserName = "chitestwebmaster", Name = "WebMaster", Password = "12345", Email = "chitestwebmaster@gmail.com"},
-                new User {UserName = "joao", Name = "João Paulo", Password = "12345", Email = "leiteamaral@yahoo.com.br"}, 
-                new User {UserName = "maria", Name = "Maria Aparecida", Password = "12345", Email = "leiteamaral@yahoo.com.br"},
-                new User {UserName = "fred", Name = "Frederico Gama", Password = "12345", Email = "leiteamaral@yahoo.com.br"},
-                new User {UserName = "sa", Name = "Samantha Leite", Password = "12345", Email = "leiteamaral@yahoo.com.br"},
-                new User {UserName = "proberto", Name = "Paulo Roberto", Password = "12345", Email = "leiteamaral@yahoo.com.br"},
-                new User {UserName = "pedrao", Name = "Pedro Augusto", Password = "12345", Email = "leiteamaral@yahoo.com.br"},
-                new User {UserName = "tsilva", Name = "Tariana Silva", Password = "12345", Email = "leiteamaral@yahoo.com.br"},
-                new User {UserName = "poliveira", Name = "Paola Oliveira", Password = "12345", Email = "leiteamaral@yahoo.com.br"},
-                new User {UserName = "ssatto", Name = "Sabrina Satto", Password = "12345", Email = "poliveira@testemailserver.com.br"},
-                new User {UserName = "lpiovani", Name = "Luana Piovani", Password = "12345", Email = "leiteamaral@yahoo.com.br"}
+                new User {UserName = "chitestwebmaster", Name = "WebMaster", Password = "12345", Email = "chitestwebmaster@gmail.com", Config = GetDefaultConfig(context)},
+                new User {UserName = "joao", Name = "João Paulo", Password = "12345", Email = "leiteamaral@yahoo.com.br", Config = GetDefaultConfig(context)}, 
+                new User {UserName = "maria", Name = "Maria Aparecida", Password = "12345", Email = "leiteamaral@yahoo.com.br", Config = GetDefaultConfig(context)},
+                new User {UserName = "fred", Name = "Frederico Gama", Password = "12345", Email = "leiteamaral@yahoo.com.br", Config = GetDefaultConfig(context)},
+                new User {UserName = "sa", Name = "Samantha Leite", Password = "12345", Email = "leiteamaral@yahoo.com.br", Config = GetDefaultConfig(context)},
+                new User {UserName = "proberto", Name = "Paulo Roberto", Password = "12345", Email = "leiteamaral@yahoo.com.br", Config = GetDefaultConfig(context)},
+                new User {UserName = "pedrao", Name = "Pedro Augusto", Password = "12345", Email = "leiteamaral@yahoo.com.br", Config = GetDefaultConfig(context)},
+                new User {UserName = "tsilva", Name = "Tariana Silva", Password = "12345", Email = "leiteamaral@yahoo.com.br", Config = GetDefaultConfig(context)},
+                new User {UserName = "poliveira", Name = "Paola Oliveira", Password = "12345", Email = "leiteamaral@yahoo.com.br", Config = GetDefaultConfig(context)},
+                new User {UserName = "ssatto", Name = "Sabrina Satto", Password = "12345", Email = "poliveira@testemailserver.com.br", Config = GetDefaultConfig(context)},
+                new User {UserName = "lpiovani", Name = "Luana Piovani", Password = "12345", Email = "leiteamaral@yahoo.com.br", Config = GetDefaultConfig(context)}
             };
             users.ForEach(d => context.Users.Add(d));
 
             return users;
         }
-        
-        private List<Configuration> CreateConfigs(WMTestDbContext context)
-        {
-            var configs = new List<Configuration>
-            {
-               new Configuration(){Name = "SmtpServer", Value = "smtp.gmail.com"},
-               new Configuration(){Name = "SmtpPort", Value = "587"},
-               new Configuration(){Name = "SmtpSSL", Value = "1"},
-               new Configuration(){Name = "SmtpUsername", Value = "chitestwebmaster@gmail.com"},
-               new Configuration(){Name = "SmtpPassword", Value = "unifei12345"}
-            };
-            configs.ForEach(d => context.Configurations.Add(d));
 
-            return configs;
+        public static Configuration GetDefaultConfig(WMTestDbContext context)
+        {
+            var config = new Configuration()
+            {
+                Server = "smtp.gmail.com",
+                Port = 587,
+                SSL = true,
+                Username = "chitestwebmaster@gmail.com",
+                Password = "unifei12345"
+            };
+            context.Configurations.Add(config);
+            return config;
         }
 
         private List<Email> CreateEmails(WMTestDbContext context, IEnumerable<User> users)
@@ -59,8 +58,7 @@ namespace WMTest.Models
             var emails = new List<Email>();
             var testDate = DateTime.Now.AddDays(-1 * NumberOfEmails);
             var iS = 0;
-            var iR = 0;
-
+            
             //Create a list of emails to populate a test database
             for (var i = 0; i < NumberOfEmails; i++)
             {                
@@ -69,7 +67,7 @@ namespace WMTest.Models
                         Sender = users.ElementAt(iS),
                         SentDate = (testDate = testDate.AddDays(i)),
                         Subject = "Testing",
-                        Recipient = users.ElementAt(iR),
+                        Recipient = String.Format("test{0}@mailserver.com", i),
                         Body = "This is a boby test only"
                     };
                 context.Emails.Add(email);
@@ -83,7 +81,6 @@ namespace WMTest.Models
                 else
                 {
                     iS = 0;
-                    iR += iR < users.Count() - 1 ? 1 : -1 * iR; 
                 }
             }
             return emails;

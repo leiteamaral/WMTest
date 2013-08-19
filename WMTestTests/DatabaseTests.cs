@@ -28,7 +28,6 @@ namespace WMTestTests
             TestDbInitialze();
             var users = Db.Emails
                 .Include(s => s.Sender)
-                .Include(r => r.Recipient)
                 .ToList();
         }
 
@@ -43,7 +42,9 @@ namespace WMTestTests
         public void GetListUsers()
         {
             TestDbInitialze();
-            var users = Db.Users.ToList(); 
+            var users = Db.Users
+                .Include(c => c.Config)
+                .ToList(); 
         }
 
 

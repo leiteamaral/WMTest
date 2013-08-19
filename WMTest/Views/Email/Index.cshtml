@@ -1,0 +1,89 @@
+﻿@model WMTest.Models.Email
+
+@{
+    ViewBag.Title = "Webmail Console";
+    int idx = ViewBag.aTab;
+}
+
+<hgroup class="title">
+    <h1>Welcome</h1>
+    <h2>@Model.Sender.Name</h2>
+</hgroup>
+
+<div align="right">
+    <span id="undo" class="k-button">Compose New Email</span>
+</div>
+
+
+@(Html.Kendo().Window()
+    .Name("window")
+    .Title("Compose new Email")
+    .Visible(false)
+    .LoadContentFrom("Send", "Email")
+    .Actions(actions => actions.Pin().Minimize().Maximize().Close())
+    .Events(ev => ev.Close("onClose"))
+)
+
+<script>
+    function onClose() {
+        $("#undo").show();
+    }
+
+    $(document).ready(function () {
+        $("#undo").bind("click", function () {
+            $("#window").data("kendoWindow").open();
+            $("#undo").hide();
+        });
+    });
+</script>
+
+<style scoped>
+   #undo {
+        text-align: center;
+        padding: 1em;
+        cursor: pointer;
+    }  
+    input, textarea {
+        border: 1px solid #e2e2e2;
+        background: #fff;
+        color: #333;
+        font-size: 1.2em;
+        margin: 5px 0 6px 0;
+        padding: 5px;
+        width: 300px;
+    }
+</style>
+
+
+@Html.ValidationSummary(true)
+
+<br />
+
+    @(Html.Kendo().TabStrip()
+        .Name("ContactsTabStrip")
+        .SelectedIndex(idx)
+        .Items(items =>
+        {
+            items.Add()
+                .Text("Emails Sent")
+                .Content(@<text>
+                    <p>
+                        <span class="label">Support:</span>
+                        <span><a href="mailto:Support@example.com">Support@example.com</a></span>
+                    </p>
+                    <p>
+                        <span class="label">Marketing:</span>
+                        <span><a href="mailto:Marketing@example.com">Marketing@example.com</a></span>
+                    </p>
+                    <p>
+                        <span class="label">General:</span>
+                        <span><a href="mailto:General@example.com">General@example.com</a></span>
+                    </p>
+                </text>)
+                .ContentHtmlAttributes(new { style = "min-height: 400px" });
+            items.Add()
+                .Text("Settings")
+                .LoadContentFrom("Index", "Config")
+                .ContentHtmlAttributes(new { style = "background-color: #e2e2e2;min-height: 400px" });
+        })
+    )

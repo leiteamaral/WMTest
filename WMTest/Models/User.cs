@@ -27,6 +27,8 @@ namespace WMTest.Models
         [StringLength(20)]
         [Required(ErrorMessage = "Password is required")]
         public string Password { get; set; }
+
+        public Configuration Config { get; set; }
     }
 
 }
