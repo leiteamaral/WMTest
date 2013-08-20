@@ -508,7 +508,6 @@
     <Content Include="Views\Email\Index.cshtml" />
     <Content Include="Views\Email\Send.cshtml" />
     <Content Include="Views\Report\List.cshtml" />
-    <Content Include="Views\Shared\_TabLayout.cshtml" />
     <Content Include="Views\Report\Chart.cshtml" />
   </ItemGroup>
   <PropertyGroup>
