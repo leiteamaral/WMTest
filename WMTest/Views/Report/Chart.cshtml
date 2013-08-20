@@ -1,0 +1,29 @@
+﻿@model IEnumerable<WMTest.Models.Chart>
+
+@{
+    ViewBag.Title = "Sent Email List";
+}
+
+ 
+<div id="chart">
+@(Html.Kendo().Chart<WMTest.Models.Chart>()
+    .Name("chart")
+    .Title("Emails sent by Weekday")
+    .Legend(legend => legend
+        .Position(ChartLegendPosition.Top)
+    )
+    .DataSource(ds => ds.Read(read => read.Action("GetChartData", "Report")))
+    .Series(series => {
+        series.Column(model => model.Val, model => model.Color).Name("Days of Week");
+        
+    })
+    .CategoryAxis(axis => axis
+        .Categories(model => model.Data)
+        .Labels(labels => labels.Rotation(-90))
+    )
+    .ValueAxis(axis => axis.Numeric()
+        .Labels(labels => labels.Format("{0:N0}"))
+        .MajorUnit(Model.Max(x=>x.Val))
+    )
+) 
+</div>

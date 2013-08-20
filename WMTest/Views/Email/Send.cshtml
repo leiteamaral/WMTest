@@ -1,65 +1,77 @@
 ﻿@model WMTest.Models.Email
 
+@{
+    string result = ViewBag.Result ?? "";
+}
 
 
-@using (Html.BeginForm())
+@using (Ajax.BeginForm("Send", "Email", new AjaxOptions() { UpdateTargetId = "updtArea" }, new { enctype = "multipart/form-data" }))
 {
-    <fieldset>
+     <div id="updtArea">
+    
+     @Html.ValidationSummary(true)
+     
+        <div><h3>@result</h3></div>
+    
+         <fieldset>
         <legend>Email</legend>
         
         <div class="editor-label">
             @Html.Label("To:")
         </div>
         <div class="editor-field">
-            @Html.TextBoxFor(model => model.Recipient)
+            @Html.TextBoxFor(model => model.Recipient, new { @class = "wide" })
             @Html.ValidationMessageFor(model => model.Recipient)
         </div>
         <div class="editor-label">
             @Html.Label("Subject:")
         </div>
         <div class="editor-field">
-            @Html.TextBoxFor(model => model.Subject)
+            @Html.TextBoxFor(model => model.Subject, new { @class = "wide" })
             @Html.ValidationMessageFor(model => model.Subject)
         </div>
         <div class="editor-label">
             @Html.Label("Message:")
         </div>
         <div class="editor-field">
-             @Html.TextAreaFor(model => model.Body)
+            @(Html.Kendo().Editor().Name("Body").Value(HttpUtility.HtmlEncode(Model.Body)).HtmlAttributes(new { style = "width: 500px;height:250px" }))
         </div>
         <p>
             <input type="submit" value="Send" />  
         </p>
-    </fieldset>     
+    </fieldset>
+    
+    </div>     
+    }
+    
+
+<script src="@Url.Content("~/Scripts/kendo/2013.2.716/jquery.unobtrusive-ajax.min.js")"></script> 
+<script src="@Url.Content("~/Scripts/kendo/2013.2.716/jquery-migrate-1.2.1.js")"></script>
+
+
+@if (!String.IsNullOrEmpty(result))
+{
+    <script>
+        $("#window").data("kendoWindow").close();
+    </script>
 }
+
+
+    
 
 
 <style scoped>
    
-        label {
-        display: block;
-        font-size: 1.2em;
-        font-weight: 600;
+   .wide
+    {
+         width: 500px;
     }
-
-    label.checkbox {
-        display: inline;
+   
+    .widefile
+    {
+         width: 500px;
     }
-
-    input, textarea {
-        border: 1px solid #e2e2e2;
-        background: #fff;
-        color: #333;
-        font-size: 1.2em;
-        margin: 5px 0 6px 0;
-        padding: 5px;
-        width: 300px;
-    }
-
-    textarea {
-        font-family: inherit;
-        width: 500px;
-    }
+        
 </style>
 
 

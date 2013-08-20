@@ -161,6 +161,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\ConfigController.cs" />
+    <Compile Include="Controllers\ReportController.cs" />
     <Compile Include="Controllers\EmailController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LoggedUserController.cs" />
@@ -168,6 +169,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\Chart.cs" />
     <Compile Include="Models\Configuration.cs" />
     <Compile Include="Models\Email.cs" />
     <Compile Include="Models\EmailClient.cs" />
@@ -177,6 +179,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\Tab.css" />
     <Content Include="Content\kendo\2013.2.716\Black\editor.png" />
     <Content Include="Content\kendo\2013.2.716\Black\imagebrowser.png" />
     <Content Include="Content\kendo\2013.2.716\Black\loading-image.gif" />
@@ -345,15 +348,15 @@
     <Content Include="Content\kendo\2013.2.716\Uniform\sprite.png" />
     <Content Include="Content\kendo\2013.2.716\Uniform\sprite_2x.png" />
     <Content Include="Global.asax" />
-    <Content Include="Scripts\jquery.unobtrusive-ajax.js" />
-    <Content Include="Scripts\jquery.unobtrusive-ajax.min.js" />
-    <Content Include="Scripts\jquery.validate-vsdoc.js" />
-    <Content Include="Scripts\jquery.validate.js" />
-    <Content Include="Scripts\jquery.validate.min.js" />
-    <Content Include="Scripts\jquery.validate.unobtrusive.js" />
-    <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
-    <Content Include="Scripts\kendo.modernizr.custom.js" />
+    <Content Include="Scripts\kendo\2013.2.716\jquery-migrate-1.2.1.js" />
     <Content Include="Scripts\kendo\2013.2.716\jquery.min.js" />
+    <Content Include="Scripts\kendo\2013.2.716\jquery.unobtrusive-ajax.js" />
+    <Content Include="Scripts\kendo\2013.2.716\jquery.unobtrusive-ajax.min.js" />
+    <Content Include="Scripts\kendo\2013.2.716\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\kendo\2013.2.716\jquery.validate.js" />
+    <Content Include="Scripts\kendo\2013.2.716\jquery.validate.min.js" />
+    <Content Include="Scripts\kendo\2013.2.716\jquery.validate.unobtrusive.js" />
+    <Content Include="Scripts\kendo\2013.2.716\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\kendo\2013.2.716\kendo.all-vsdoc.js" />
     <Content Include="Scripts\kendo\2013.2.716\kendo.all.min.intellisense.js" />
     <Content Include="Scripts\kendo\2013.2.716\kendo.all.min.js" />
@@ -418,6 +421,7 @@
     <Content Include="Scripts\kendo\2013.2.716\kendo.mobile.switch.min.js" />
     <Content Include="Scripts\kendo\2013.2.716\kendo.mobile.tabstrip.min.js" />
     <Content Include="Scripts\kendo\2013.2.716\kendo.mobile.view.min.js" />
+    <Content Include="Scripts\kendo\2013.2.716\kendo.modernizr.custom.js" />
     <Content Include="Scripts\kendo\2013.2.716\kendo.multiselect.min.js" />
     <Content Include="Scripts\kendo\2013.2.716\kendo.numerictextbox.min.js" />
     <Content Include="Scripts\kendo\2013.2.716\kendo.pager.min.js" />
@@ -450,9 +454,10 @@
     <Content Include="Scripts\kendo\2013.2.716\kendo.web.min.intellisense.js" />
     <Content Include="Scripts\kendo\2013.2.716\kendo.web.min.js" />
     <Content Include="Scripts\kendo\2013.2.716\kendo.window.min.js" />
-    <Content Include="Scripts\knockout-2.1.0.debug.js" />
-    <Content Include="Scripts\knockout-2.1.0.js" />
-    <Content Include="Scripts\modernizr-2.5.3.js" />
+    <Content Include="Scripts\kendo\2013.2.716\knockout-2.1.0.debug.js" />
+    <Content Include="Scripts\kendo\2013.2.716\knockout-2.1.0.js" />
+    <Content Include="Scripts\kendo\2013.2.716\modernizr-2.5.3.js" />
+    <Content Include="Scripts\kendo\2013.2.716\_references.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -462,7 +467,6 @@
     <Content Include="Web.Release.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
-    <Content Include="Scripts\_references.js" />
     <Content Include="Views\Web.config">
     </Content>
     <Content Include="Content\Site.css">
@@ -478,13 +482,7 @@
     <Content Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Home\About.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="Views\Home\Index.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Home\Contact.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Shared\_Layout.cshtml" />
@@ -505,13 +503,13 @@
     <Content Include="Views\Shared\EditorTemplates\Time.cshtml" />
     <Content Include="Views\Login\Index.cshtml" />
     <Content Include="Views\Login\Create.cshtml" />
-    <Content Include="Views\Login\Edit.cshtml" />
     <Content Include="Views\Login\Forgot.cshtml" />
     <Content Include="Views\Config\Index.cshtml" />
     <Content Include="Views\Email\Index.cshtml" />
     <Content Include="Views\Email\Send.cshtml" />
-    <Content Include="Views\Email\Edit.cshtml" />
-    <Content Include="Views\Email\Delete.cshtml" />
+    <Content Include="Views\Report\List.cshtml" />
+    <Content Include="Views\Shared\_TabLayout.cshtml" />
+    <Content Include="Views\Report\Chart.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
@@ -529,7 +527,7 @@
         <WebProjectProperties>
           <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>3682</DevelopmentServerPort>
+          <DevelopmentServerPort>2773</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
           <IISUrl>
           </IISUrl>

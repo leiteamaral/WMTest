@@ -23,24 +23,18 @@ namespace WMTest.Controllers
             return PartialView(LoggedUser.Config);
         }
 
+        //
+        // POST: /Config/5
         [HttpPost]
         public ActionResult Index(Configuration config)
         {
-            try
+            if (ModelState.IsValid)
             {
-                if (ModelState.IsValid)
-                {
-                    db.Entry(config).State = EntityState.Modified;
-                    db.SaveChanges();
-                }
-                return RedirectToAction("Index", "Email", new RouteValueDictionary() { { "aTab", "0" } });
+                db.Entry(config).State = EntityState.Modified;
+                db.SaveChanges();
+                ViewBag.Result = "Success, configurations saved!!!";
             }
-            catch (Exception)
-            {
-                return RedirectToAction("Index", "Email", new RouteValueDictionary() { { "aTab", "0" }, { "Result", "Error!!!" } });
-            }
-            
-            
+            return PartialView(LoggedUser.Config);
         }
        
 

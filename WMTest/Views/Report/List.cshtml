@@ -1,0 +1,29 @@
+﻿@model IEnumerable<WMTest.Models.Email>
+
+@{
+    ViewBag.Title = "Sent Email List";
+}
+
+<div id="list">
+
+@(Html.Kendo().Grid(Model)    
+    .Name("Grid")
+    .Columns(columns =>
+    {
+        columns.Bound(p => p.Sender.Name);
+        columns.Bound(p => p.Subject);
+        columns.Bound(p => p.Recipient);
+        columns.Bound(p => p.SentDate);
+    })
+    .Sortable()
+    .Pageable()
+    .Scrollable()
+    .Filterable()
+    .DataSource(dataSource => dataSource
+        .Ajax()
+        .Read(read => read.Action("List", "Report"))
+    )
+)
+      
+ </div>
+ 

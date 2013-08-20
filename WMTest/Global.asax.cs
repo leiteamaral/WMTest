@@ -41,11 +41,10 @@ namespace WMTest
         protected void Application_Start()
         {
             Database.SetInitializer<WMTestDbContext>(new WMDbInitializer());
-
             AreaRegistration.RegisterAllAreas();
-
             RegisterGlobalFilters(GlobalFilters.Filters);
             RegisterRoutes(RouteTable.Routes);
+            //BundleConfig.RegisterBundles(BundleTable.Bundles);
         }
     }
 }

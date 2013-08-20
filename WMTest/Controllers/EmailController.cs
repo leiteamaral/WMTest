@@ -6,6 +6,8 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
+using Kendo.Mvc.Extensions;
+using Kendo.Mvc.UI;
 using WMTest.Models;
 
 namespace WMTest.Controllers
@@ -53,68 +55,20 @@ namespace WMTest.Controllers
 
             if (err != null)
             {
-                return RedirectToAction("Index", new RouteValueDictionary() { { "aTab", "0" }, { "Result", err } });
+                ModelState.AddModelError("", err);
+                return PartialView(sendEmail);
             }
             else
             {
-                db.Emails.Add(sendEmail);
-                db.SaveChanges();
+                ViewBag.Result = "Success sending email!!!";
             }
-            return RedirectToAction("Index");
+
+            db.Users.Attach(sendEmail.Sender);
+            db.Emails.Add(sendEmail);
+            db.SaveChanges();
+            return PartialView(sendEmail);
         }
         
-        //
-        // GET: /Email/Edit/5
-
-        public ActionResult Edit(int id = 0)
-        {
-            Email email = db.Emails.Find(id);
-            if (email == null)
-            {
-                return HttpNotFound();
-            }
-            return View(email);
-        }
-
-        //
-        // POST: /Email/Edit/5
-
-        [HttpPost]
-        public ActionResult Edit(Email email)
-        {
-            if (ModelState.IsValid)
-            {
-                db.Entry(email).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
-            return View(email);
-        }
-
-        //
-        // GET: /Email/Delete/5
-
-        public ActionResult Delete(int id = 0)
-        {
-            Email email = db.Emails.Find(id);
-            if (email == null)
-            {
-                return HttpNotFound();
-            }
-            return View(email);
-        }
-
-        //
-        // POST: /Email/Delete/5
-
-        [HttpPost, ActionName("Delete")]
-        public ActionResult DeleteConfirmed(int id)
-        {
-            Email email = db.Emails.Find(id);
-            db.Emails.Remove(email);
-            db.SaveChanges();
-            return RedirectToAction("Index");
-        }
 
         protected override void Dispose(bool disposing)
         {

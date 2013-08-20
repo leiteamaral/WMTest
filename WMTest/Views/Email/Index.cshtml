@@ -19,9 +19,11 @@
     .Name("window")
     .Title("Compose new Email")
     .Visible(false)
+    .Draggable(true)
     .LoadContentFrom("Send", "Email")
-    .Actions(actions => actions.Pin().Minimize().Maximize().Close())
-    .Events(ev => ev.Close("onClose"))
+    .Actions(actions => actions.Close())
+    .Events(x=>x.Close("onClose"))
+    
 )
 
 <script>
@@ -66,24 +68,12 @@
         {
             items.Add()
                 .Text("Emails Sent")
-                .Content(@<text>
-                    <p>
-                        <span class="label">Support:</span>
-                        <span><a href="mailto:Support@example.com">Support@example.com</a></span>
-                    </p>
-                    <p>
-                        <span class="label">Marketing:</span>
-                        <span><a href="mailto:Marketing@example.com">Marketing@example.com</a></span>
-                    </p>
-                    <p>
-                        <span class="label">General:</span>
-                        <span><a href="mailto:General@example.com">General@example.com</a></span>
-                    </p>
-                </text>)
-                .ContentHtmlAttributes(new { style = "min-height: 400px" });
+                .LoadContentFrom("List", "Report");
             items.Add()
                 .Text("Settings")
-                .LoadContentFrom("Index", "Config")
-                .ContentHtmlAttributes(new { style = "background-color: #e2e2e2;min-height: 400px" });
+                .LoadContentFrom("Index", "Config");
+            items.Add()
+                .Text("Statistics")
+                .LoadContentFrom("Chart", "Report");
         })
     )

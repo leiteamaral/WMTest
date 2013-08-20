@@ -8,7 +8,7 @@ namespace WMTest.Models
 {
     public class WMDbInitializer : DropCreateDatabaseIfModelChanges<WMTestDbContext> {
 
-        private const int NumberOfEmails = 20;
+        private const int NumberOfEmailsByUser = 100;
         
         protected override void Seed(WMTestDbContext context)
         {
@@ -56,31 +56,22 @@ namespace WMTest.Models
         private List<Email> CreateEmails(WMTestDbContext context, IEnumerable<User> users)
         {
             var emails = new List<Email>();
-            var testDate = DateTime.Now.AddDays(-1 * NumberOfEmails);
-            var iS = 0;
+            var testDate = DateTime.Now.AddDays(-1 * NumberOfEmailsByUser);
             
-            //Create a list of emails to populate a test database
-            for (var i = 0; i < NumberOfEmails; i++)
-            {                
-                var email = new Email()
+            foreach (var user in users)
+            {
+                for (var i = 0; i < NumberOfEmailsByUser; i++)
+                {
+                    var email = new Email()
                     {
-                        Sender = users.ElementAt(iS),
-                        SentDate = (testDate = testDate.AddDays(i)),
+                        Sender = user,
+                        SentDate = testDate.AddDays(i),
                         Subject = "Testing",
                         Recipient = String.Format("test{0}@mailserver.com", i),
                         Body = "This is a boby test only"
                     };
-                context.Emails.Add(email);
-                emails.Add(email);
-                               
-
-                if (iS < users.Count() - 1)
-                {
-                    iS++;
-                }
-                else
-                {
-                    iS = 0;
+                    context.Emails.Add(email);
+                    emails.Add(email);
                 }
             }
             return emails;

@@ -4,11 +4,18 @@
     ViewBag.Title = "Email Configuration";
 }
 
-@using (Html.BeginForm())
-{
-    @Html.ValidationSummary(true)
 
-    <fieldset>
+@using (Ajax.BeginForm("Index", "Config", new AjaxOptions(){UpdateTargetId = "updtArea"}))
+{
+    <div id="updtArea">
+    
+    @Html.ValidationSummary(true)
+    
+    <p>
+       <h3>@ViewBag.Result</h3> 
+    </p>
+
+        <fieldset>
         <legend>Configuration</legend>
                
         @Html.HiddenFor(model => model.ID)
@@ -58,8 +65,10 @@
         </p>
     </fieldset>
     
-    <p>
-        @ViewBag.Result
-    </p>                       
+    </div>
+                         
 }
 
+<script src="@Url.Content("~/Scripts/kendo/2013.2.716/jquery.unobtrusive-ajax.min.js")"></script> 
+<script src="@Url.Content("~/Scripts/kendo/2013.2.716/jquery-migrate-1.2.1.js")"></script>
+	  

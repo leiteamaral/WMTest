@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Net;
 using System.Net.Mail;
+using System.Web;
 
 namespace WMTest.Models
 {
@@ -47,7 +48,7 @@ namespace WMTest.Models
             };
             return SendEmail(email);
         }
-        
+
         public static string SendEmail(Email email)
         {
             try
@@ -57,14 +58,16 @@ namespace WMTest.Models
                 message.To.Add(new MailAddress(email.Recipient));
                 message.Subject = email.Subject;
                 message.From = new MailAddress(email.Sender.Email, email.Sender.Name);
-                message.Body = email.Body;
+                message.Body = HttpUtility.HtmlDecode(email.Body);
+                message.IsBodyHtml = true;
+                
                 GetSmtpClient(email.Sender).Send(message);
                 db.Emails.Add(email);
                 return null;
             }
             catch (Exception e)
             {
-                return "Error sending email - " + e.Message;
+                return e.Message;
             }
         }
 

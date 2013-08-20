@@ -23,7 +23,6 @@ namespace WMTest.Controllers
                     action = "Index"
                 }));
             }
-
            
         }
 

@@ -70,6 +70,8 @@ namespace WMTest.Controllers
         public ActionResult Index(User user)
         {
             var uFound = db.Users.Include(x=>x.Config).FirstOrDefault(x=>x.UserName.Equals(user.UserName) && x.Password.Equals(user.Password));
+            //var uFound = db.Users.Include(x => x.Config).FirstOrDefault(); //For tests
+            
             if (uFound!=null)
             {
                 Session.Add("LOGGED_USER", uFound);
@@ -89,7 +91,6 @@ namespace WMTest.Controllers
 
         //
         // POST: /Login/Create
-
         [HttpPost]
         public ActionResult Create(User user)
         {
@@ -115,34 +116,7 @@ namespace WMTest.Controllers
             }
             return View(user);
         }
-
-        //
-        // GET: /Login/Edit/5
-
-        public ActionResult Edit(int id = 0)
-        {
-            User user = db.Users.Find(id);
-            if (user == null)
-            {
-                return HttpNotFound();
-            }
-            return View(user);
-        }
-
-        //
-        // POST: /Login/Edit/5
-
-        [HttpPost]
-        public ActionResult Edit(User user)
-        {
-            if (ModelState.IsValid)
-            {
-                db.Entry(user).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
-            return View(user);
-        }
+        
 
         protected override void Dispose(bool disposing)
         {
