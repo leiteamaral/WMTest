@@ -5,6 +5,7 @@ using System.Net;
 using System.Net.Mail;
 using System.Web;
 using WebGrease.Css.Extensions;
+using System.Data.Entity;
 
 namespace WMTest.Models
 {
@@ -23,11 +24,11 @@ namespace WMTest.Models
                 var basicCredential = new NetworkCredential(smtpUsername, smtpPassword);
                 var smtpClient = new SmtpClient()
                 {
-                    Credentials = basicCredential,
+                    UseDefaultCredentials = !smtpSSL,
                     Host = smtpServer,
-                    DeliveryMethod = SmtpDeliveryMethod.Network,
                     Port = smtpPort,
-                    EnableSsl = smtpSSL
+                    EnableSsl = smtpSSL,
+                    Credentials = basicCredential
                 };
                 return smtpClient;
             }
@@ -40,7 +41,8 @@ namespace WMTest.Models
         public static string SendEmailFromWebMaster(string recipient, string body, string subject)
         {
             var db = new WMTestDbContext();
-            var webMaster = db.Users.FirstOrDefault(x => x.UserName.Equals("chitestwebmaster"));
+            var webMaster = db.Users.Include(x=>x.Config).FirstOrDefault(x => x.UserName.Equals("chitestwebmaster"));
+
             var email = new Email()
             {
                 Sender = webMaster, 
@@ -55,21 +57,21 @@ namespace WMTest.Models
         {
             try
             {
-                var db = new WMTestDbContext();
                 var message = new MailMessage();
                 message.To.Add(new MailAddress(email.Recipient));
                 message.Subject = email.Subject;
                 message.From = new MailAddress(email.Sender.Email, email.Sender.Name);
+                
                 message.Body = HttpUtility.HtmlDecode(email.Body);
                 message.IsBodyHtml = true;
+                message.HeadersEncoding = System.Text.Encoding.UTF8;
+                message.SubjectEncoding = System.Text.Encoding.UTF8;
 
                 if (attachaments != null && attachaments.Any())
                 {
                     attachaments.ForEach(x => message.Attachments.Add(new Attachment(x)));
                 }
-                
                 GetSmtpClient(email.Sender).Send(message);
-                db.Emails.Add(email);
                 return null;
             }
             catch (Exception e)

@@ -2,19 +2,17 @@
 
 @{
     string result = ViewBag.Result ?? "";
-    string error = ViewBag.Error ?? "";
 }
 
 
 @using (Ajax.BeginForm("Send", "Email", new AjaxOptions() { UpdateTargetId = "updtArea" }, new { enctype = "multipart/form-data" }))
 {
-     <div id="updtArea">
+     <div id="updtArea" class="wide_window">
         
         @Html.ValidationSummary(false)
 
-         <div><h3>@result</h3></div>
-        <div style="color: red">@error</div>
-    
+        <div><h3>@result</h3></div>
+        
         <fieldset>
         <legend>Email</legend>
         
@@ -34,7 +32,7 @@
             @(Html.Kendo().Upload().Name("attachments").Async(async => async.Save("UploadFiles", "Email").Remove("RemoveUploadedFiles", "Email")))
         </div>
         <div class="editor-field">
-            @(Html.Kendo().Editor().Name("Body").Value(@<text>@Model.Body</text>).HtmlAttributes(new { style = "width: 500px;height:200px" }))
+            @(Html.Kendo().Editor().Name("Body").Value(Model.Body).HtmlAttributes(new { style = "width: 500px;height:200px" }).Encode(false))
         </div>
         <p>
             <input type="submit" value="Send" />  
@@ -61,6 +59,11 @@
 
 
 <style scoped>
+    
+    .wide_window
+    {
+         width: 505px;
+    }
    
    .wide
     {
@@ -71,7 +74,6 @@
     {
          width: 500px;
     }
-        
 </style>
 
 

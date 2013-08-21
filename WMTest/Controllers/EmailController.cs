@@ -104,7 +104,7 @@ namespace WMTest.Controllers
 
             if (err != null)
             {
-                ViewBag.Error = err;
+                ModelState.AddModelError("", err);
                 return PartialView(sendEmail);
             }
             
