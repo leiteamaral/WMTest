@@ -40,8 +40,7 @@
       <HintPath>..\..\..\Program Files\Microsoft ADO.NET Entity Framework 4.1\Binaries\EntityFramework.dll</HintPath>
     </Reference>
     <Reference Include="Kendo.Mvc">
-      <HintPath>..\..\..\..\..\..\Program Files\Telerik\Kendo UI for ASP.NET MVC Q2 2013\wrappers\aspnetmvc\Binaries\Mvc3\Kendo.Mvc.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\Telerik\Kendo UI for ASP.NET MVC Q2 2013\wrappers\aspnetmvc\Binaries\Mvc3\Kendo.Mvc.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System" />

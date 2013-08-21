@@ -23,12 +23,15 @@
     .LoadContentFrom("Send", "Email")
     .Actions(actions => actions.Close())
     .Events(x=>x.Close("onClose"))
-    
+    .Scrollable(true)
+    .Height(500)
+    .Scrollable(true)
 )
 
 <script>
     function onClose() {
         $("#undo").show();
+        
     }
 
     $(document).ready(function () {

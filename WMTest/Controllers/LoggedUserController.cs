@@ -25,6 +25,7 @@ namespace WMTest.Controllers
             }
            
         }
+        
 
         protected User LoggedUser 
         {

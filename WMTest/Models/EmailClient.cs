@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Mail;
 using System.Web;
+using WebGrease.Css.Extensions;
 
 namespace WMTest.Models
 {
@@ -46,10 +48,10 @@ namespace WMTest.Models
                 Subject = subject, 
                 Body = body
             };
-            return SendEmail(email);
+            return SendEmail(email, null);
         }
 
-        public static string SendEmail(Email email)
+        public static string SendEmail(Email email, IEnumerable<string> attachaments)
         {
             try
             {
@@ -60,6 +62,11 @@ namespace WMTest.Models
                 message.From = new MailAddress(email.Sender.Email, email.Sender.Name);
                 message.Body = HttpUtility.HtmlDecode(email.Body);
                 message.IsBodyHtml = true;
+
+                if (attachaments != null && attachaments.Any())
+                {
+                    attachaments.ForEach(x => message.Attachments.Add(new Attachment(x)));
+                }
                 
                 GetSmtpClient(email.Sender).Send(message);
                 db.Emails.Add(email);

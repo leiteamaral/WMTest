@@ -2,18 +2,20 @@
 
 @{
     string result = ViewBag.Result ?? "";
+    string error = ViewBag.Error ?? "";
 }
 
 
 @using (Ajax.BeginForm("Send", "Email", new AjaxOptions() { UpdateTargetId = "updtArea" }, new { enctype = "multipart/form-data" }))
 {
      <div id="updtArea">
+        
+        @Html.ValidationSummary(false)
+
+         <div><h3>@result</h3></div>
+        <div style="color: red">@error</div>
     
-     @Html.ValidationSummary(true)
-     
-        <div><h3>@result</h3></div>
-    
-         <fieldset>
+        <fieldset>
         <legend>Email</legend>
         
         <div class="editor-label">
@@ -21,20 +23,18 @@
         </div>
         <div class="editor-field">
             @Html.TextBoxFor(model => model.Recipient, new { @class = "wide" })
-            @Html.ValidationMessageFor(model => model.Recipient)
         </div>
         <div class="editor-label">
             @Html.Label("Subject:")
         </div>
         <div class="editor-field">
             @Html.TextBoxFor(model => model.Subject, new { @class = "wide" })
-            @Html.ValidationMessageFor(model => model.Subject)
         </div>
-        <div class="editor-label">
-            @Html.Label("Message:")
+        <div class="k-upload-files">
+            @(Html.Kendo().Upload().Name("attachments").Async(async => async.Save("UploadFiles", "Email").Remove("RemoveUploadedFiles", "Email")))
         </div>
         <div class="editor-field">
-            @(Html.Kendo().Editor().Name("Body").Value(HttpUtility.HtmlEncode(Model.Body)).HtmlAttributes(new { style = "width: 500px;height:250px" }))
+            @(Html.Kendo().Editor().Name("Body").Value(@<text>@Model.Body</text>).HtmlAttributes(new { style = "width: 500px;height:200px" }))
         </div>
         <p>
             <input type="submit" value="Send" />  
